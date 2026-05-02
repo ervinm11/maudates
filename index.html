@@ -95,11 +95,7 @@ button.add {
   opacity: 0.85;
 }
 
-.card:hover {
-  transform: translateY(-3px);
-}
-
-/* border glow */
+/* glow border */
 .card::before {
   content: "";
   position: absolute;
@@ -142,9 +138,10 @@ textarea {
   min-height: 60px;
 }
 
-/* IMAGE DISPLAY */
+/* IMAGE */
 .image-wrap {
   margin-top: 12px;
+  position: relative;
   display: flex;
   justify-content: center;
 }
@@ -157,12 +154,17 @@ textarea {
   box-shadow: 0 10px 25px rgba(0,0,0,0.12);
 }
 
-/* UPLOAD LABEL */
-.upload-label {
-  display: inline-block;
-  margin-top: 10px;
+/* IMAGE DELETE BUTTON */
+.img-delete {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  border: none;
+  background: rgba(0,0,0,0.5);
+  color: white;
   font-size: 11px;
-  color: #2e7d32;
+  padding: 5px 8px;
+  border-radius: 10px;
   cursor: pointer;
 }
 
@@ -271,18 +273,18 @@ function render() {
       >${e.text}</textarea>
 
       ${!e.locked ? `
-        <label class="upload-label">
-          📷 Add photo
-          <input type="file" accept="image/*"
-            onchange="loadImage(event, ${e.id})"
-            style="display:none;"
-          />
-        </label>
+        <input type="file" accept="image/*"
+          onchange="loadImage(event, ${e.id})"
+        />
       ` : ""}
 
       ${e.image ? `
         <div class="image-wrap">
           <img src="${e.image}" />
+          
+          ${!e.locked ? `
+            <button class="img-delete" onclick="deleteImage(${e.id})">🗑</button>
+          ` : ""}
         </div>
       ` : ""}
 
@@ -324,7 +326,7 @@ function updateText(id, value) {
   }
 }
 
-/* IMAGE */
+/* IMAGE UPLOAD */
 function loadImage(event, id) {
   const file = event.target.files[0];
   if (!file) return;
@@ -343,6 +345,16 @@ function loadImage(event, id) {
   reader.readAsDataURL(file);
 }
 
+/* DELETE IMAGE */
+function deleteImage(id) {
+  const item = entries.find(e => e.id === id);
+  if (item && !item.locked) {
+    item.image = null;
+    save();
+    render();
+  }
+}
+
 /* LOCK */
 function toggleLock(id) {
   const item = entries.find(e => e.id === id);
@@ -353,7 +365,7 @@ function toggleLock(id) {
   }
 }
 
-/* DELETE */
+/* DELETE ENTRY */
 function removeCard(id) {
   const item = entries.find(e => e.id === id);
 
