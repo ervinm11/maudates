@@ -95,6 +95,10 @@ button.add {
   opacity: 0.85;
 }
 
+.card:hover {
+  transform: translateY(-3px);
+}
+
 /* border glow */
 .card::before {
   content: "";
@@ -138,13 +142,28 @@ textarea {
   min-height: 60px;
 }
 
-/* IMAGE */
-img {
+/* IMAGE DISPLAY */
+.image-wrap {
+  margin-top: 12px;
+  display: flex;
+  justify-content: center;
+}
+
+.image-wrap img {
   width: 100%;
-  margin-top: 10px;
-  border-radius: 14px;
+  max-height: 280px;
   object-fit: cover;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+/* UPLOAD LABEL */
+.upload-label {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 11px;
+  color: #2e7d32;
+  cursor: pointer;
 }
 
 /* ACTIONS */
@@ -251,12 +270,21 @@ function render() {
         oninput="updateText(${e.id}, this.value)"
       >${e.text}</textarea>
 
-      <input type="file" accept="image/*"
-        ${e.locked ? "disabled" : ""}
-        onchange="loadImage(event, ${e.id})"
-      />
+      ${!e.locked ? `
+        <label class="upload-label">
+          📷 Add photo
+          <input type="file" accept="image/*"
+            onchange="loadImage(event, ${e.id})"
+            style="display:none;"
+          />
+        </label>
+      ` : ""}
 
-      ${e.image ? `<img src="${e.image}"/>` : ""}
+      ${e.image ? `
+        <div class="image-wrap">
+          <img src="${e.image}" />
+        </div>
+      ` : ""}
 
       <div class="actions">
         <button class="btn lock" onclick="toggleLock(${e.id})">
