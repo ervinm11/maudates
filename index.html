@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Mautcha Dates</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+/* 🌈 Background */
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+
+  background: linear-gradient(
+    120deg,
+    #c8e6c9,
+    #b3e5fc,
+    #f8bbd0
+  );
+
+  background-size: 400% 400%;
+  animation: gradientFlow 12s ease infinite;
+}
+
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* HEADER */
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 18px;
+  text-align: center;
+  backdrop-filter: blur(14px);
+  background: rgba(255,255,255,0.35);
+  z-index: 10;
+}
+
+header h1 {
+  font-size: 18px;
+  color: #2e7d32;
+}
+
+button.add {
+  margin-top: 6px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #66bb6a, #42a5f5, #ec407a);
+  color: white;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+/* TIMELINE */
+.timeline {
+  margin-top: 110px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 120px;
+}
+
+/* CARD */
+.card {
+  width: 88%;
+  max-width: 520px;
+  margin: 14px 0;
+  padding: 18px;
+  border-radius: 22px;
+
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  position: relative;
+  transition: 0.3s ease;
+}
+
+.card.locked {
+  opacity: 0.85;
+}
+
+/* border glow */
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  padding: 1px;
+
+  background: linear-gradient(135deg, #a5d6a7, #81d4fa, #f48fb1);
+
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+}
+
+/* LABEL */
+.label {
+  font-size: 12px;
+  color: #2e7d32;
+  opacity: 0.85;
+}
+
+.sip {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+}
+
+/* TEXT */
+textarea {
+  width: 100%;
+  margin-top: 10px;
+  border: none;
+  outline: none;
+  background: transparent;
+  resize: none;
+  font-size: 14px;
+  color: #1b1b1b;
+  min-height: 60px;
+}
+
+/* IMAGE */
+img {
+  width: 100%;
+  margin-top: 10px;
+  border-radius: 14px;
+  object-fit: cover;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+}
+
+/* ACTIONS */
+.actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.btn {
+  border: none;
+  padding: 6px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.delete {
+  background: #ef9a9a;
+}
+
+.lock {
+  background: #ffd54f;
+}
+
+/* BUBBLES */
+.bubble {
+  position: absolute;
+  bottom: -50px;
+  width: 10px;
+  height: 10px;
+  background: rgba(255,255,255,0.4);
+  border-radius: 50%;
+  animation: rise 8s infinite ease-in;
+}
+
+@keyframes rise {
+  from { transform: translateY(0); opacity: 0.4; }
+  to { transform: translateY(-110vh); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🧋 Mautcha Dates</h1>
+  <button class="add" onclick="addCard()">+ New Drink</button>
+</header>
+
+<div class="timeline" id="timeline"></div>
+
+<script>
+let entries = [];
+
+const sipLabels = [
+  "a sip of thought",
+  "first sip of curiosity",
+  "warm sip of memory",
+  "quiet sip of reflection",
+  "soft sip of missing something",
+  "gentle sip of realization",
+  "late-night sip of overthinking",
+  "calm sip of acceptance"
+];
+
+/* LOAD */
+window.onload = () => {
+  entries = JSON.parse(localStorage.getItem("matcha")) || [];
+  render();
+  spawnBubbles();
+};
+
+/* ADD */
+function addCard() {
+  entries.push({
+    id: Date.now(),
+    text: "",
+    locked: false,
+    image: null
+  });
+
+  save();
+  render();
+}
+
+/* RENDER */
+function render() {
+  const timeline = document.getElementById("timeline");
+  timeline.innerHTML = "";
+
+  entries.forEach((e, i) => {
+    const card = document.createElement("div");
+    card.className = "card" + (e.locked ? " locked" : "");
+
+    card.innerHTML = `
+      <div class="label">
+        ${getDateLabel(i)} • 
+        <span class="sip">${getSipLabel(i)}</span>
+      </div>
+
+      <textarea 
+        ${e.locked ? "disabled" : ""}
+        oninput="updateText(${e.id}, this.value)"
+      >${e.text}</textarea>
+
+      <input type="file" accept="image/*"
+        ${e.locked ? "disabled" : ""}
+        onchange="loadImage(event, ${e.id})"
+      />
+
+      ${e.image ? `<img src="${e.image}"/>` : ""}
+
+      <div class="actions">
+        <button class="btn lock" onclick="toggleLock(${e.id})">
+          ${e.locked ? "Unlock" : "Lock"}
+        </button>
+
+        <button class="btn delete" onclick="removeCard(${e.id})">
+          Delete
+        </button>
+      </div>
+    `;
+
+    timeline.appendChild(card);
+  });
+}
+
+/* DATE */
+function getDateLabel(i) {
+  const n = i + 1;
+  if (n === 1) return "1st date";
+  if (n === 2) return "2nd date";
+  if (n === 3) return "3rd date";
+  return `${n}th date`;
+}
+
+/* SIP */
+function getSipLabel(i) {
+  return sipLabels[i % sipLabels.length];
+}
+
+/* TEXT */
+function updateText(id, value) {
+  const item = entries.find(e => e.id === id);
+  if (item && !item.locked) {
+    item.text = value;
+    save();
+  }
+}
+
+/* IMAGE */
+function loadImage(event, id) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = function(e) {
+    const item = entries.find(x => x.id === id);
+    if (item && !item.locked) {
+      item.image = e.target.result;
+      save();
+      render();
+    }
+  };
+
+  reader.readAsDataURL(file);
+}
+
+/* LOCK */
+function toggleLock(id) {
+  const item = entries.find(e => e.id === id);
+  if (item) {
+    item.locked = !item.locked;
+    save();
+    render();
+  }
+}
+
+/* DELETE */
+function removeCard(id) {
+  const item = entries.find(e => e.id === id);
+
+  if (item && item.locked) {
+    alert("This entry is locked 🔒");
+    return;
+  }
+
+  entries = entries.filter(e => e.id !== id);
+  save();
+  render();
+}
+
+/* SAVE */
+function save() {
+  localStorage.setItem("matcha", JSON.stringify(entries));
+}
+
+/* BUBBLES */
+function spawnBubbles() {
+  setInterval(() => {
+    const b = document.createElement("div");
+    b.className = "bubble";
+
+    b.style.left = Math.random() * window.innerWidth + "px";
+    b.style.width = b.style.height = Math.random() * 8 + 6 + "px";
+    b.style.animationDuration = (6 + Math.random() * 6) + "s";
+
+    document.body.appendChild(b);
+
+    setTimeout(() => b.remove(), 10000);
+  }, 600);
+}
+</script>
+
+</body>
+</html>
