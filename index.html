@@ -3,40 +3,33 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Mautcha Dates</title>
+<title>A Sip for Mau</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
+
+/* RESET */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 
-/* 🌈 Background */
+/* BACKGROUND */
 body {
   min-height: 100vh;
   overflow-x: hidden;
-
-  background: linear-gradient(
-    120deg,
-    #c8e6c9,
-    #b3e5fc,
-    #f8bbd0
-  );
-
+  background: linear-gradient(120deg,#c8e6c9,#b3e5fc,#f8bbd0);
   background-size: 400% 400%;
   animation: gradientFlow 12s ease infinite;
 }
 
 @keyframes gradientFlow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
 }
 
 /* HEADER */
@@ -52,160 +45,155 @@ header {
 }
 
 header h1 {
-  font-size: 18px;
-  color: #2e7d32;
+  color:#2e7d32;
+  font-size:18px;
 }
 
 button.add {
-  margin-top: 6px;
-  padding: 8px 14px;
-  border: none;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #66bb6a, #42a5f5, #ec407a);
-  color: white;
-  cursor: pointer;
-  font-size: 12px;
+  margin-top:6px;
+  padding:8px 14px;
+  border:none;
+  border-radius:999px;
+  background: linear-gradient(135deg,#66bb6a,#42a5f5,#ec407a);
+  color:white;
+  cursor:pointer;
 }
 
 /* TIMELINE */
 .timeline {
-  margin-top: 110px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-bottom: 120px;
+  margin-top:110px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding-bottom:120px;
 }
 
 /* CARD */
 .card {
-  width: 88%;
-  max-width: 520px;
-  margin: 14px 0;
-  padding: 18px;
-  border-radius: 22px;
-
+  width:88%;
+  max-width:520px;
+  margin:14px 0;
+  padding:18px;
+  border-radius:22px;
   background: rgba(255,255,255,0.6);
   backdrop-filter: blur(18px);
-  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-  position: relative;
-  transition: 0.3s ease;
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+  text-align:center;
 }
 
+/* LOCKED STYLE */
 .card.locked {
-  opacity: 0.85;
-}
-
-/* glow border */
-.card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 22px;
-  padding: 1px;
-
-  background: linear-gradient(135deg, #a5d6a7, #81d4fa, #f48fb1);
-
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-
-  -webkit-mask-composite: xor;
-  pointer-events: none;
+  opacity: 0.75;
+  filter: saturate(0.8);
 }
 
 /* LABEL */
 .label {
-  font-size: 12px;
-  color: #2e7d32;
-  opacity: 0.85;
+  font-size:12px;
+  color:#2e7d32;
+  margin-bottom:8px;
 }
 
-.sip {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 500;
-}
-
-/* TEXT */
+/* TEXTAREA */
 textarea {
-  width: 100%;
-  margin-top: 10px;
-  border: none;
-  outline: none;
-  background: transparent;
-  resize: none;
-  font-size: 14px;
-  color: #1b1b1b;
-  min-height: 60px;
+  width:100%;
+  margin-top:10px;
+  border:none;
+  background:transparent;
+  resize:none;
+  min-height:60px;
+  text-align:center;
+  font-size:14px;
+  outline:none;
 }
 
 /* IMAGE */
 .image-wrap {
-  margin-top: 12px;
-  position: relative;
-  display: flex;
-  justify-content: center;
+  margin-top:12px;
+  position:relative;
 }
 
 .image-wrap img {
-  width: 100%;
-  max-height: 280px;
-  object-fit: cover;
-  border-radius: 16px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+  width:100%;
+  border-radius:16px;
 }
 
-/* IMAGE DELETE BUTTON */
 .img-delete {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  border: none;
-  background: rgba(0,0,0,0.5);
-  color: white;
-  font-size: 11px;
-  padding: 5px 8px;
-  border-radius: 10px;
-  cursor: pointer;
+  position:absolute;
+  top:6px;
+  right:6px;
+  background:rgba(0,0,0,0.5);
+  color:white;
+  border:none;
+  border-radius:8px;
+  padding:4px 6px;
+  cursor:pointer;
+  font-size:10px;
 }
 
-/* ACTIONS */
+/* BUTTONS */
 .actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
+  display:flex;
+  justify-content:space-between;
+  margin-top:10px;
 }
 
 .btn {
-  border: none;
-  padding: 6px 10px;
-  border-radius: 12px;
-  font-size: 11px;
-  cursor: pointer;
+  border:none;
+  padding:6px 10px;
+  border-radius:12px;
+  font-size:11px;
+  cursor:pointer;
 }
 
-.delete {
-  background: #ef9a9a;
+.delete { background:#ef9a9a; }
+.lock { background:#ffd54f; }
+
+/* 🔒 LOCKED BUTTON PINK */
+.lockedBtn {
+  background:#f48fb1 !important;
+  color:white;
 }
 
-.lock {
-  background: #ffd54f;
+/* FLOWERS */
+.flower {
+  position:fixed;
+  top:-20px;
+  font-size:16px;
+  animation:fall linear forwards;
+  z-index:1;
 }
 
-/* BUBBLES */
-.bubble {
-  position: absolute;
-  bottom: -50px;
-  width: 10px;
-  height: 10px;
-  background: rgba(255,255,255,0.4);
-  border-radius: 50%;
-  animation: rise 8s infinite ease-in;
+@keyframes fall {
+  to { transform:translateY(110vh); }
 }
 
-@keyframes rise {
-  from { transform: translateY(0); opacity: 0.4; }
-  to { transform: translateY(-110vh); opacity: 0; }
+/* HEART */
+.heart {
+  position:fixed;
+  font-size:18px;
+  animation:floatUp 1s forwards;
+  z-index:9999;
 }
+
+@keyframes floatUp {
+  to { transform:translateY(-60px); opacity:0; }
+}
+
+/* CAT */
+.cat {
+  position:fixed;
+  font-size:40px;
+  z-index:9999;
+  cursor:pointer;
+}
+
+.cat-label {
+  position:fixed;
+  font-size:11px;
+  color:#2e7d32;
+}
+
 </style>
 </head>
 
@@ -213,192 +201,213 @@ textarea {
 
 <header>
   <h1>🧋 Mautcha Dates</h1>
-  <button class="add" onclick="addCard()">+ New Drink</button>
+  <button class="add" id="addBtn">+ New Drink</button>
 </header>
 
 <div class="timeline" id="timeline"></div>
 
+<!-- CATS -->
+<div id="haru" class="cat">😺</div>
+<div id="hiro" class="cat">🐱</div>
+
+<div id="haruLabel" class="cat-label">Haru</div>
+<div id="hiroLabel" class="cat-label">Hiro</div>
+
 <script>
+
 let entries = [];
 
 const sipLabels = [
   "a sip of thought",
-  "first sip of curiosity",
-  "warm sip of memory",
-  "quiet sip of reflection",
-  "soft sip of missing something",
-  "gentle sip of realization",
-  "late-night sip of overthinking",
-  "calm sip of acceptance"
+  "soft matcha memory",
+  "calm iced blue feeling",
+  "warm strawberry silence"
 ];
 
-/* LOAD */
-window.onload = () => {
+/* INIT */
+window.addEventListener("DOMContentLoaded", () => {
   entries = JSON.parse(localStorage.getItem("matcha")) || [];
   render();
-  spawnBubbles();
-};
+  spawnFlowers();
+  setupCats();
+  document.getElementById("addBtn").addEventListener("click", ()=>addCard());
+});
 
-/* ADD */
-function addCard() {
+/* ADD CARD */
+function addCard(text=""){
   entries.push({
     id: Date.now(),
-    text: "",
-    locked: false,
-    image: null
+    text:text,
+    locked:false,
+    image:null
   });
-
   save();
   render();
 }
 
 /* RENDER */
-function render() {
-  const timeline = document.getElementById("timeline");
-  timeline.innerHTML = "";
+function render(){
+  const t = document.getElementById("timeline");
+  t.innerHTML = "";
 
-  entries.forEach((e, i) => {
+  entries.forEach((e,i)=>{
     const card = document.createElement("div");
     card.className = "card" + (e.locked ? " locked" : "");
 
     card.innerHTML = `
-      <div class="label">
-        ${getDateLabel(i)} • 
-        <span class="sip">${getSipLabel(i)}</span>
-      </div>
+      <div class="label">${getSipLabel(i)}</div>
 
-      <textarea 
-        ${e.locked ? "disabled" : ""}
-        oninput="updateText(${e.id}, this.value)"
-      >${e.text}</textarea>
+      <textarea ${e.locked ? "disabled" : ""}>${e.text}</textarea>
 
       ${!e.locked ? `
-        <input type="file" accept="image/*"
-          onchange="loadImage(event, ${e.id})"
-        />
+        <div style="margin-top:10px;">
+          <button class="imgBtn">📸 Add image</button>
+          <input type="file" class="imgInput" accept="image/*" hidden>
+        </div>
       ` : ""}
 
       ${e.image ? `
         <div class="image-wrap">
-          <img src="${e.image}" />
-          
-          ${!e.locked ? `
-            <button class="img-delete" onclick="deleteImage(${e.id})">🗑</button>
-          ` : ""}
+          <img src="${e.image}">
+          ${!e.locked ? `<button class="img-delete">🗑</button>` : ""}
         </div>
       ` : ""}
 
       <div class="actions">
-        <button class="btn lock" onclick="toggleLock(${e.id})">
+        <button class="btn lockBtn ${e.locked ? "lockedBtn" : ""}">
           ${e.locked ? "Unlock" : "Lock"}
         </button>
 
-        <button class="btn delete" onclick="removeCard(${e.id})">
+        <button class="btn deleteBtn delete">
           Delete
         </button>
       </div>
     `;
 
-    timeline.appendChild(card);
+    /* TEXT */
+    const textarea = card.querySelector("textarea");
+    textarea.addEventListener("input", (ev)=>{
+      if(!e.locked){
+        e.text = ev.target.value;
+        save();
+      }
+    });
+
+    /* LOCK */
+    card.querySelector(".lockBtn").addEventListener("click", ()=>{
+      e.locked = !e.locked;
+      save();
+      render();
+    });
+
+    /* DELETE (BLOCK IF LOCKED) */
+    card.querySelector(".deleteBtn").addEventListener("click", ()=>{
+      if(e.locked){
+        alert("🔒 Unlock before deleting this memory");
+        return;
+      }
+      entries = entries.filter(x => x.id !== e.id);
+      save();
+      render();
+    });
+
+    /* IMAGE */
+    const imgBtn = card.querySelector(".imgBtn");
+    const imgInput = card.querySelector(".imgInput");
+
+    if(imgBtn){
+      imgBtn.addEventListener("click", ()=>imgInput.click());
+    }
+
+    if(imgInput){
+      imgInput.addEventListener("change", (ev)=>{
+        if(e.locked) return;
+
+        const file = ev.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = ()=>{
+          e.image = reader.result;
+          save();
+          render();
+        };
+
+        if(file) reader.readAsDataURL(file);
+      });
+    }
+
+    /* DELETE IMAGE */
+    const delImg = card.querySelector(".img-delete");
+    if(delImg){
+      delImg.addEventListener("click", ()=>{
+        if(e.locked) return;
+        e.image = null;
+        save();
+        render();
+      });
+    }
+
+    t.appendChild(card);
   });
 }
 
-/* DATE */
-function getDateLabel(i) {
-  const n = i + 1;
-  if (n === 1) return "1st date";
-  if (n === 2) return "2nd date";
-  if (n === 3) return "3rd date";
-  return `${n}th date`;
-}
+/* SIP FORMAT */
+function getSipLabel(i){
+  let n = i + 1;
+  let s = "th";
 
-/* SIP */
-function getSipLabel(i) {
-  return sipLabels[i % sipLabels.length];
-}
+  if(n%10===1 && n%100!==11) s="st";
+  else if(n%10===2 && n%100!==12) s="nd";
+  else if(n%10===3 && n%100!==13) s="rd";
 
-/* TEXT */
-function updateText(id, value) {
-  const item = entries.find(e => e.id === id);
-  if (item && !item.locked) {
-    item.text = value;
-    save();
-  }
-}
-
-/* IMAGE UPLOAD */
-function loadImage(event, id) {
-  const file = event.target.files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-
-  reader.onload = function(e) {
-    const item = entries.find(x => x.id === id);
-    if (item && !item.locked) {
-      item.image = e.target.result;
-      save();
-      render();
-    }
-  };
-
-  reader.readAsDataURL(file);
-}
-
-/* DELETE IMAGE */
-function deleteImage(id) {
-  const item = entries.find(e => e.id === id);
-  if (item && !item.locked) {
-    item.image = null;
-    save();
-    render();
-  }
-}
-
-/* LOCK */
-function toggleLock(id) {
-  const item = entries.find(e => e.id === id);
-  if (item) {
-    item.locked = !item.locked;
-    save();
-    render();
-  }
-}
-
-/* DELETE ENTRY */
-function removeCard(id) {
-  const item = entries.find(e => e.id === id);
-
-  if (item && item.locked) {
-    alert("This entry is locked 🔒");
-    return;
-  }
-
-  entries = entries.filter(e => e.id !== id);
-  save();
-  render();
+  return `${n}${s} sip • ${sipLabels[i % sipLabels.length]}`;
 }
 
 /* SAVE */
-function save() {
+function save(){
   localStorage.setItem("matcha", JSON.stringify(entries));
 }
 
-/* BUBBLES */
-function spawnBubbles() {
-  setInterval(() => {
-    const b = document.createElement("div");
-    b.className = "bubble";
-
-    b.style.left = Math.random() * window.innerWidth + "px";
-    b.style.width = b.style.height = Math.random() * 8 + 6 + "px";
-    b.style.animationDuration = (6 + Math.random() * 6) + "s";
-
-    document.body.appendChild(b);
-
-    setTimeout(() => b.remove(), 10000);
-  }, 600);
+/* FLOWERS */
+function spawnFlowers(){
+  setInterval(()=>{
+    const f = document.createElement("div");
+    f.className = "flower";
+    f.innerText = "🌸";
+    f.style.left = Math.random()*100+"vw";
+    f.style.animationDuration = (3+Math.random()*4)+"s";
+    document.body.appendChild(f);
+    setTimeout(()=>f.remove(),8000);
+  },500);
 }
+
+/* CATS */
+function setupCats(){
+  const haru = document.getElementById("haru");
+  const hiro = document.getElementById("hiro");
+  const hl = document.getElementById("haruLabel");
+  const hr = document.getElementById("hiroLabel");
+
+  function roam(cat,label){
+    let x = Math.random()* (window.innerWidth-80);
+    let y = Math.random()* (window.innerHeight-80);
+
+    cat.style.left = x+"px";
+    cat.style.top = y+"px";
+
+    label.style.left = (x+20)+"px";
+    label.style.top = (y+45)+"px";
+
+    setTimeout(()=>roam(cat,label),3000);
+  }
+
+  roam(haru,hl);
+  roam(hiro,hr);
+
+  haru.onclick = ()=>addCard("😺 Haru brings soft matcha energy...");
+  hiro.onclick = ()=>addCard("🐱 Hiro brings calm iced blue vibes...");
+}
+
 </script>
 
 </body>
